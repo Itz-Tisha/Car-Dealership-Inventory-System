@@ -22,16 +22,19 @@ public class VehicleService {
     	  if (request.getCategory() == null || request.getCategory().trim().isEmpty()) {
     		    throw new RuntimeException("Category is required");
     		}
-        Vehicle vehicle = new Vehicle();
-
-        vehicle.setMake(request.getMake());
-        vehicle.setModel(request.getModel());
-        vehicle.setCategory(request.getCategory());
-        vehicle.setPrice(request.getPrice());
-        vehicle.setQuantity(request.getQuantity());
-
-        repository.save(vehicle);
-
-        return "Vehicle added successfully";
+    	  if (request.getPrice() == null || request.getPrice() <= 0) {
+    		    throw new RuntimeException("Price must be greater than zero");
+    		}
+	        Vehicle vehicle = new Vehicle();
+	
+	        vehicle.setMake(request.getMake());
+	        vehicle.setModel(request.getModel());
+	        vehicle.setCategory(request.getCategory());
+	        vehicle.setPrice(request.getPrice());
+	        vehicle.setQuantity(request.getQuantity());
+	
+	        repository.save(vehicle);
+	
+	        return "Vehicle added successfully";
     }
 }
