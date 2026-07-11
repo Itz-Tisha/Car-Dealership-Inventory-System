@@ -179,4 +179,25 @@ class VehicleServiceTest {
 
         Mockito.verify(repository).findAll();
     }
+    @Test
+    void shouldReturnVehiclesByMake() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setMake("Toyota");
+        vehicle.setModel("Fortuner");
+
+        Mockito.when(repository.findByMakeIgnoreCase("Toyota"))
+                .thenReturn(List.of(vehicle));
+
+        List<Vehicle> result = service.searchByMake("Toyota");
+
+        assertEquals(1, result.size());
+        assertEquals("Toyota", result.get(0).getMake());
+
+        Mockito.verify(repository).findByMakeIgnoreCase("Toyota");
+    }
 }
