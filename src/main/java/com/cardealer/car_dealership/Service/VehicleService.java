@@ -19,6 +19,9 @@ public class VehicleService {
     	  if (request.getModel() == null || request.getModel().trim().isEmpty()) {
     		    throw new RuntimeException("Model is required");
     		}
+    	  if (request.getCategory() == null || request.getCategory().trim().isEmpty()) {
+    		    throw new RuntimeException("Category is required");
+    		}
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMake(request.getMake());
