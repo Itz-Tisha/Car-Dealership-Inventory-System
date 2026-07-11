@@ -55,4 +55,8 @@ public class VehicleService {
     public List<Vehicle> searchByModel(String model) {
         return repository.findByModelIgnoreCase(model);
     }
+    
+    public List<Vehicle> searchByCategory(String category) {
+        return repository.findByCategoryIgnoreCase(category);
+    }
 }
