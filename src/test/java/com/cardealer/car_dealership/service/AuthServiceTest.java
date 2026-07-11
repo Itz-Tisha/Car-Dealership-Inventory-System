@@ -4,7 +4,9 @@ package com.cardealer.car_dealership.service;
 
 import com.cardealer.car_dealership.dto.RegisterRequest;
 import com.cardealer.car_dealership.entity.User;
-import com.cardealer.car_dealership.repository.UserRepository;
+import com.cardealer.car_dealership.Repository.UserRepository;
+import com.cardealer.car_dealership.Service.AuthService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
