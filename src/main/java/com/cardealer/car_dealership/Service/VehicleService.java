@@ -2,6 +2,9 @@ package com.cardealer.car_dealership.Service;
 
 import com.cardealer.car_dealership.dto.VehicleRequest;
 import com.cardealer.car_dealership.entity.Vehicle;
+
+import java.util.List;
+
 import com.cardealer.car_dealership.Repository.VehicleRepository;
 
 public class VehicleService {
@@ -39,5 +42,10 @@ public class VehicleService {
 	        repository.save(vehicle);
 	
 	        return "Vehicle added successfully";
+    }
+    public List<Vehicle> getAllVehicles() {
+
+        return repository.findAll();
+
     }
 }
