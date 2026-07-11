@@ -48,13 +48,19 @@ public class AuthService {
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
 
-        if (!encoder.matches(request.getPassword(),
-                user.getPassword())) {
+        validatePassword(request.getPassword(), user.getPassword());
+
+        return "Login Successful";
+    }
+
+    private void validatePassword(String rawPassword,
+                                  String encodedPassword){
+
+        if(!encoder.matches(rawPassword, encodedPassword)){
 
             throw new RuntimeException("Invalid Password");
         }
 
-        return "Login Successful";
     }
 
 }

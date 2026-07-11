@@ -75,5 +75,63 @@ class AuthServiceTest {
         assertEquals("Login Successful", result);
 
     }
+    
+    @Test
+    void shouldThrowExceptionWhenUserNotFound(){
+
+        UserRepository repository =
+                Mockito.mock(UserRepository.class);
+
+        BCryptPasswordEncoder encoder =
+                new BCryptPasswordEncoder();
+
+        AuthService service =
+                new AuthService(repository, encoder);
+
+        LoginRequest request = new LoginRequest();
+
+        request.setEmail("xyz@gmail.com");
+
+        request.setPassword("123456");
+
+        Mockito.when(repository.findByEmail(request.getEmail()))
+                .thenReturn(Optional.empty());
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.login(request));
+
+        assertEquals("User not found",
+                exception.getMessage());
+
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenPasswordIsIncorrect() {
+
+        UserRepository repository = Mockito.mock(UserRepository.class);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        AuthService service = new AuthService(repository, encoder);
+
+        User user = new User();
+        user.setEmail("abc@gmail.com");
+        user.setPassword(encoder.encode("123456"));
+
+        Mockito.when(repository.findByEmail("abc@gmail.com"))
+                .thenReturn(Optional.of(user));
+
+        LoginRequest request = new LoginRequest();
+        request.setEmail("abc@gmail.com");
+        request.setPassword("12345678");
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.login(request)
+        );
+
+        assertEquals("Invalid Password", exception.getMessage());
+    }
 
 }
