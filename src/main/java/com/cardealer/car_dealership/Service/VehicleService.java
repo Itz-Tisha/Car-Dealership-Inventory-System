@@ -13,18 +13,21 @@ public class VehicleService {
     }
 
     public String addVehicle(VehicleRequest request) {
-    	  if (request.getMake() == null || request.getMake().trim().isEmpty()) {
-    	        throw new RuntimeException("Make is required");
-    	    }
-    	  if (request.getModel() == null || request.getModel().trim().isEmpty()) {
-    		    throw new RuntimeException("Model is required");
-    		}
-    	  if (request.getCategory() == null || request.getCategory().trim().isEmpty()) {
-    		    throw new RuntimeException("Category is required");
-    		}
-    	  if (request.getPrice() == null || request.getPrice() <= 0) {
-    		    throw new RuntimeException("Price must be greater than zero");
-    		}
+	    	  if (request.getMake() == null || request.getMake().trim().isEmpty()) {
+	    	        throw new RuntimeException("Make is required");
+	    	    }
+	    	  if (request.getModel() == null || request.getModel().trim().isEmpty()) {
+	    		    throw new RuntimeException("Model is required");
+	    		}
+	    	  if (request.getCategory() == null || request.getCategory().trim().isEmpty()) {
+	    		    throw new RuntimeException("Category is required");
+	    		}
+	    	  if (request.getPrice() == null || request.getPrice() <= 0) {
+	    		    throw new RuntimeException("Price must be greater than zero");
+	    		}
+	    	  if (request.getQuantity() == null || request.getQuantity() < 0) {
+	    		    throw new RuntimeException("Quantity cannot be negative");
+	    		}
 	        Vehicle vehicle = new Vehicle();
 	
 	        vehicle.setMake(request.getMake());
