@@ -128,4 +128,25 @@ class VehicleServiceTest {
 
         assertEquals("Price must be greater than zero", exception.getMessage());
     }
+    @Test
+    void shouldThrowExceptionWhenQuantityIsNegative() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        VehicleRequest request = new VehicleRequest();
+
+        request.setMake("Toyota");
+        request.setModel("Fortuner");
+        request.setCategory("SUV");
+        request.setPrice(4500000.0);
+        request.setQuantity(-1);
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.addVehicle(request));
+
+        assertEquals("Quantity cannot be negative", exception.getMessage());
+    }
 }
