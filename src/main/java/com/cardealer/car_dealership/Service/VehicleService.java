@@ -83,5 +83,16 @@ public class VehicleService {
         return "Vehicle updated successfully";
     }
     
-    
+    public String purchaseVehicle(Long id) {
+
+        Vehicle vehicle = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle not found"));
+
+        vehicle.setQuantity(vehicle.getQuantity() - 1);
+
+        repository.save(vehicle);
+
+        return "Vehicle purchased successfully";
+    }
 }
