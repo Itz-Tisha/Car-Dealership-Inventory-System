@@ -2,6 +2,7 @@ package com.cardealer.car_dealership.service;
 
 
 
+import com.cardealer.car_dealership.dto.LoginRequest;
 import com.cardealer.car_dealership.dto.RegisterRequest;
 import com.cardealer.car_dealership.entity.User;
 import com.cardealer.car_dealership.Repository.UserRepository;
@@ -12,6 +13,8 @@ import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Optional;
 
 class AuthServiceTest {
 
@@ -39,6 +42,37 @@ class AuthServiceTest {
         assertEquals("User Registered Successfully", result);
 
         Mockito.verify(repository).save(Mockito.any(User.class));
+
+    }
+    
+    @Test
+    void shouldLoginSuccessfully() {
+
+        UserRepository repository = Mockito.mock(UserRepository.class);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        AuthService service =
+                new AuthService(repository, encoder);
+
+        User user = new User();
+
+        user.setEmail("abc@gmail.com");
+
+        user.setPassword(encoder.encode("123456"));
+
+        Mockito.when(repository.findByEmail("abc@gmail.com"))
+                .thenReturn(Optional.of(user));
+
+        LoginRequest request = new LoginRequest();
+
+        request.setEmail("abc@gmail.com");
+
+        request.setPassword("123456");
+
+        String result = service.login(request);
+
+        assertEquals("Login Successful", result);
 
     }
 
