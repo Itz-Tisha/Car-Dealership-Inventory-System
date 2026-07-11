@@ -133,5 +133,28 @@ class AuthServiceTest {
 
         assertEquals("Invalid Password", exception.getMessage());
     }
+    
+    @Test
+    void shouldThrowExceptionWhenUserDoesNotExist() {
 
+        UserRepository repository = Mockito.mock(UserRepository.class);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        AuthService service = new AuthService(repository, encoder);
+
+        Mockito.when(repository.findByEmail("unknown@gmail.com"))
+                .thenReturn(Optional.empty());
+
+        LoginRequest request = new LoginRequest();
+        request.setEmail("unknown@gmail.com");
+        request.setPassword("123456");
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.login(request)
+        );
+
+        assertEquals("User not found", exception.getMessage());
+    }
 }
