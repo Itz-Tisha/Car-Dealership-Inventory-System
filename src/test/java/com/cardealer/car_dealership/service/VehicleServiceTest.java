@@ -219,4 +219,22 @@ class VehicleServiceTest {
         assertEquals(1, result.size());
         assertEquals("City", result.get(0).getModel());
     }
+    @Test
+    void shouldReturnVehiclesByCategory() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setCategory("SUV");
+
+        Mockito.when(repository.findByCategoryIgnoreCase("SUV"))
+                .thenReturn(List.of(vehicle));
+
+        List<Vehicle> result = service.searchByCategory("SUV");
+
+        assertEquals(1, result.size());
+        assertEquals("SUV", result.get(0).getCategory());
+    }
 }

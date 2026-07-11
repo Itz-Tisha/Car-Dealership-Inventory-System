@@ -51,4 +51,8 @@ public class VehicleService {
     public List<Vehicle> searchByMake(String make) {
         return repository.findByMakeIgnoreCase(make);
     }
+    
+    public List<Vehicle> searchByModel(String model) {
+        return repository.findByModelIgnoreCase(model);
+    }
 }
