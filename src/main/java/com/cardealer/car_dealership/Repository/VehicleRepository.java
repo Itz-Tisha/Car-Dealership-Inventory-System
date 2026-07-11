@@ -13,4 +13,5 @@ public interface VehicleRepository
 	List<Vehicle> findByMakeIgnoreCase(String make);
 	List<Vehicle> findByModelIgnoreCase(String model);
 	List<Vehicle> findByCategoryIgnoreCase(String category);
+	List<Vehicle> findByPriceBetween(Double minPrice, Double maxPrice);
 }

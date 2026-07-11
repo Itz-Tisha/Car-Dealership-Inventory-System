@@ -237,4 +237,24 @@ class VehicleServiceTest {
         assertEquals(1, result.size());
         assertEquals("SUV", result.get(0).getCategory());
     }
+    
+    @Test
+    void shouldReturnVehiclesWithinPriceRange() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setPrice(2500000.0);
+
+        Mockito.when(repository.findByPriceBetween(2000000.0, 3000000.0))
+                .thenReturn(List.of(vehicle));
+
+        List<Vehicle> result =
+                service.searchByPriceRange(2000000.0, 3000000.0);
+
+        assertEquals(1, result.size());
+        assertEquals(2500000.0, result.get(0).getPrice());
+    }
 }
