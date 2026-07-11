@@ -89,6 +89,10 @@ public class VehicleService {
                 .orElseThrow(() ->
                         new RuntimeException("Vehicle not found"));
 
+        if (vehicle.getQuantity() <= 0) {
+            throw new RuntimeException("Vehicle is out of stock");
+        }
+
         vehicle.setQuantity(vehicle.getQuantity() - 1);
 
         repository.save(vehicle);
