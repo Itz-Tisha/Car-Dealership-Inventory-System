@@ -1,5 +1,6 @@
 package com.cardealer.car_dealership.Service;
 
+import com.cardealer.car_dealership.dto.RestockRequest;
 import com.cardealer.car_dealership.dto.VehicleRequest;
 import com.cardealer.car_dealership.entity.Vehicle;
 
@@ -111,5 +112,18 @@ public class VehicleService {
                 .orElseThrow(() ->
                         new RuntimeException("Vehicle not found"));
     }
+    
+    public String restockVehicle(Long id,
+            RestockRequest request) {
+
+		Vehicle vehicle = getVehicleById(id);
+		
+		vehicle.setQuantity(
+		vehicle.getQuantity() + request.getQuantity());
+		
+		repository.save(vehicle);
+		
+		return "Vehicle restocked successfully";
+		}
     
 }
