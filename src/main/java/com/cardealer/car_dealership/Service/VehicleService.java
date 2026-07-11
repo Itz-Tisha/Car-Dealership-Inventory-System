@@ -68,9 +68,7 @@ public class VehicleService {
     
     public String updateVehicle(Long id, VehicleRequest request) {
 
-        Vehicle vehicle = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Vehicle not found"));
+    	Vehicle vehicle = getVehicleById(id);
 
         vehicle.setMake(request.getMake());
         vehicle.setModel(request.getModel());
@@ -85,9 +83,7 @@ public class VehicleService {
     
     public String purchaseVehicle(Long id) {
 
-        Vehicle vehicle = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Vehicle not found"));
+    	Vehicle vehicle = getVehicleById(id);
 
         if (vehicle.getQuantity() <= 0) {
             throw new RuntimeException("Vehicle is out of stock");
@@ -102,13 +98,18 @@ public class VehicleService {
     
     public String deleteVehicle(Long id) {
 
-        Vehicle vehicle = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Vehicle not found"));
+    	Vehicle vehicle = getVehicleById(id);
 
         repository.delete(vehicle);
 
         return "Vehicle deleted successfully";
+    }
+    
+    private Vehicle getVehicleById(Long id) {
+
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle not found"));
     }
     
 }
