@@ -421,4 +421,30 @@ class VehicleServiceTest {
         Mockito.verify(repository, Mockito.never())
                 .delete(Mockito.any());
     }
+    
+    @Test
+    void shouldRestockVehicleSuccessfully() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(1L);
+        vehicle.setQuantity(5);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        RestockRequest request = new RestockRequest();
+        request.setQuantity(10);
+
+        String result = service.restockVehicle(1L, request);
+
+        assertEquals("Vehicle restocked successfully", result);
+
+        assertEquals(15, vehicle.getQuantity());
+
+        Mockito.verify(repository).save(vehicle);
+    }
 }
