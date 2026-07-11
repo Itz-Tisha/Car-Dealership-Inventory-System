@@ -257,4 +257,40 @@ class VehicleServiceTest {
         assertEquals(1, result.size());
         assertEquals(2500000.0, result.get(0).getPrice());
     }
+    
+    @Test
+    void shouldUpdateVehicleSuccessfully() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(1L);
+        vehicle.setMake("Toyota");
+        vehicle.setModel("Fortuner");
+        vehicle.setCategory("SUV");
+        vehicle.setPrice(4500000.0);
+        vehicle.setQuantity(5);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        VehicleRequest request = new VehicleRequest();
+        request.setMake("Toyota");
+        request.setModel("Legender");
+        request.setCategory("SUV");
+        request.setPrice(4800000.0);
+        request.setQuantity(10);
+
+        String result = service.updateVehicle(1L, request);
+
+        assertEquals("Vehicle updated successfully", result);
+
+        assertEquals("Legender", vehicle.getModel());
+        assertEquals(4800000.0, vehicle.getPrice());
+        assertEquals(10, vehicle.getQuantity());
+
+        Mockito.verify(repository).save(vehicle);
+    }
 }
