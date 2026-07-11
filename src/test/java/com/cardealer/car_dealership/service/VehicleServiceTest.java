@@ -5,6 +5,8 @@ package com.cardealer.car_dealership.service;
 import com.cardealer.car_dealership.dto.VehicleRequest;
 import com.cardealer.car_dealership.entity.Vehicle;
 import com.cardealer.car_dealership.Repository.VehicleRepository;
+import com.cardealer.car_dealership.Service.VehicleService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
