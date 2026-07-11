@@ -1,6 +1,7 @@
 package com.cardealer.car_dealership.Service;
 
 
+import com.cardealer.car_dealership.dto.LoginRequest;
 import com.cardealer.car_dealership.dto.RegisterRequest;
 import com.cardealer.car_dealership.entity.User;
 import com.cardealer.car_dealership.Repository.UserRepository;
@@ -39,6 +40,21 @@ public class AuthService {
         repository.save(user);
 
         return "User Registered Successfully";
+    }
+    
+    public String login(LoginRequest request) {
+
+        User user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        if (!encoder.matches(request.getPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("Invalid Password");
+        }
+
+        return "Login Successful";
     }
 
 }
