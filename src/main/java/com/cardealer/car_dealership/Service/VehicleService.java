@@ -59,4 +59,10 @@ public class VehicleService {
     public List<Vehicle> searchByCategory(String category) {
         return repository.findByCategoryIgnoreCase(category);
     }
+    
+    public List<Vehicle> searchByPriceRange(Double minPrice,
+            Double maxPrice) {
+
+		return repository.findByPriceBetween(minPrice, maxPrice);
+		}
 }
