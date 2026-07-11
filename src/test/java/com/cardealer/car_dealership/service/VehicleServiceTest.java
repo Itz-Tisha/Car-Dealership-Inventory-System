@@ -357,5 +357,28 @@ class VehicleServiceTest {
                 exception.getMessage());
     }
     
+    @Test
+    void shouldThrowExceptionWhenVehicleIsOutOfStock() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setQuantity(0);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.purchaseVehicle(1L));
+
+        assertEquals("Vehicle is out of stock",
+                exception.getMessage());
+
+        Mockito.verify(repository, Mockito.never())
+                .save(Mockito.any(Vehicle.class));
+    }
   
 }
