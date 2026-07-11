@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.Optional;
 
 class VehicleServiceTest {
 
@@ -290,6 +291,50 @@ class VehicleServiceTest {
         assertEquals("Legender", vehicle.getModel());
         assertEquals(4800000.0, vehicle.getPrice());
         assertEquals(10, vehicle.getQuantity());
+
+        Mockito.verify(repository).save(vehicle);
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenVehicleDoesNotExist() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        VehicleRequest request = new VehicleRequest();
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.updateVehicle(1L, request));
+
+        assertEquals("Vehicle not found",
+                exception.getMessage());
+    }
+    
+    @Test
+    void shouldPurchaseVehicleSuccessfully() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(1L);
+        vehicle.setMake("Toyota");
+        vehicle.setQuantity(5);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        String result = service.purchaseVehicle(1L);
+
+        assertEquals("Vehicle purchased successfully", result);
+
+        assertEquals(4, vehicle.getQuantity());
 
         Mockito.verify(repository).save(vehicle);
     }
