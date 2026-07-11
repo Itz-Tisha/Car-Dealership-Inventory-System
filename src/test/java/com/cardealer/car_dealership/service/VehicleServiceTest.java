@@ -400,4 +400,25 @@ class VehicleServiceTest {
 
         Mockito.verify(repository).delete(vehicle);
     }
+    
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistingVehicle() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.deleteVehicle(1L));
+
+        assertEquals("Vehicle not found",
+                exception.getMessage());
+
+        Mockito.verify(repository, Mockito.never())
+                .delete(Mockito.any());
+    }
 }
