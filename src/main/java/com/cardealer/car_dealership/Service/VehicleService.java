@@ -65,4 +65,21 @@ public class VehicleService {
 
 		return repository.findByPriceBetween(minPrice, maxPrice);
 		}
+    
+    public String updateVehicle(Long id, VehicleRequest request) {
+
+        Vehicle vehicle = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle not found"));
+
+        vehicle.setMake(request.getMake());
+        vehicle.setModel(request.getModel());
+        vehicle.setCategory(request.getCategory());
+        vehicle.setPrice(request.getPrice());
+        vehicle.setQuantity(request.getQuantity());
+
+        repository.save(vehicle);
+
+        return "Vehicle updated successfully";
+    }
 }
