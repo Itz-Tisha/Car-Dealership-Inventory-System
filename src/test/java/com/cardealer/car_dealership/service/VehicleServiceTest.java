@@ -39,4 +39,29 @@ class VehicleServiceTest {
                 .save(Mockito.any(Vehicle.class));
 
     }
+    
+    @Test
+    void shouldThrowExceptionWhenMakeIsEmpty() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        VehicleRequest request = new VehicleRequest();
+
+        request.setMake("");
+        request.setModel("Fortuner");
+        request.setCategory("SUV");
+        request.setPrice(4500000.0);
+        request.setQuantity(5);
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.addVehicle(request));
+
+        assertEquals("Make is required", exception.getMessage());
+
+        Mockito.verify(repository, Mockito.never())
+                .save(Mockito.any(Vehicle.class));
+    }
 }
