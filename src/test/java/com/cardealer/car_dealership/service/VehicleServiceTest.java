@@ -338,4 +338,24 @@ class VehicleServiceTest {
 
         Mockito.verify(repository).save(vehicle);
     }
+    
+    @Test
+    void shouldThrowExceptionWhenVehicleNotFoundDuringPurchase() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.purchaseVehicle(1L));
+
+        assertEquals("Vehicle not found",
+                exception.getMessage());
+    }
+    
+  
 }
