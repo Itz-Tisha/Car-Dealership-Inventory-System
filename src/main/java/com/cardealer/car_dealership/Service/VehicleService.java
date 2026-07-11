@@ -16,6 +16,9 @@ public class VehicleService {
     	  if (request.getMake() == null || request.getMake().trim().isEmpty()) {
     	        throw new RuntimeException("Make is required");
     	    }
+    	  if (request.getModel() == null || request.getModel().trim().isEmpty()) {
+    		    throw new RuntimeException("Model is required");
+    		}
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMake(request.getMake());

@@ -86,4 +86,25 @@ class VehicleServiceTest {
 
         assertEquals("Model is required", exception.getMessage());
     }
+    @Test
+    void shouldThrowExceptionWhenCategoryIsEmpty() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        VehicleRequest request = new VehicleRequest();
+
+        request.setMake("Toyota");
+        request.setModel("Fortuner");
+        request.setCategory("");
+        request.setPrice(4500000.0);
+        request.setQuantity(5);
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> service.addVehicle(request));
+
+        assertEquals("Category is required", exception.getMessage());
+    }
 }
