@@ -381,4 +381,23 @@ class VehicleServiceTest {
                 .save(Mockito.any(Vehicle.class));
     }
   
+    @Test
+    void shouldDeleteVehicleSuccessfully() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(1L);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        String result = service.deleteVehicle(1L);
+
+        assertEquals("Vehicle deleted successfully", result);
+
+        Mockito.verify(repository).delete(vehicle);
+    }
 }
