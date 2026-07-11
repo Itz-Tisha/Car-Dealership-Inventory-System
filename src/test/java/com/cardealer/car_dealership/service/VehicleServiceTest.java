@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 class VehicleServiceTest {
 
     @Test
@@ -148,5 +150,33 @@ class VehicleServiceTest {
                 () -> service.addVehicle(request));
 
         assertEquals("Quantity cannot be negative", exception.getMessage());
+    }
+    @Test
+    void shouldReturnAllVehicles() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle1 = new Vehicle();
+        vehicle1.setMake("Toyota");
+
+        Vehicle vehicle2 = new Vehicle();
+        vehicle2.setMake("Honda");
+
+        List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
+
+        Mockito.when(repository.findAll())
+                .thenReturn(vehicles);
+
+        List<Vehicle> result = service.getAllVehicles();
+
+        assertEquals(2, result.size());
+
+        assertEquals("Toyota", result.get(0).getMake());
+
+        assertEquals("Honda", result.get(1).getMake());
+
+        Mockito.verify(repository).findAll();
     }
 }
