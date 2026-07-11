@@ -100,5 +100,15 @@ public class VehicleService {
         return "Vehicle purchased successfully";
     }
     
+    public String deleteVehicle(Long id) {
+
+        Vehicle vehicle = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle not found"));
+
+        repository.delete(vehicle);
+
+        return "Vehicle deleted successfully";
+    }
     
 }
