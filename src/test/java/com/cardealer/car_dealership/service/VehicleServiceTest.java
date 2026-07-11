@@ -200,4 +200,23 @@ class VehicleServiceTest {
 
         Mockito.verify(repository).findByMakeIgnoreCase("Toyota");
     }
+    
+    @Test
+    void shouldReturnVehiclesByModel() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setModel("City");
+
+        Mockito.when(repository.findByModelIgnoreCase("City"))
+                .thenReturn(List.of(vehicle));
+
+        List<Vehicle> result = service.searchByModel("City");
+
+        assertEquals(1, result.size());
+        assertEquals("City", result.get(0).getModel());
+    }
 }
