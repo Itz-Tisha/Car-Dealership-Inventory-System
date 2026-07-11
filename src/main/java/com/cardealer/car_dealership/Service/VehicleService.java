@@ -48,4 +48,7 @@ public class VehicleService {
         return repository.findAll();
 
     }
+    public List<Vehicle> searchByMake(String make) {
+        return repository.findByMakeIgnoreCase(make);
+    }
 }
