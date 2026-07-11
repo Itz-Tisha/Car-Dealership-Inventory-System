@@ -472,4 +472,31 @@ class VehicleServiceTest {
         Mockito.verify(repository, Mockito.never())
                 .save(Mockito.any());
     }
+    
+    @Test
+    void shouldThrowExceptionWhenRestockQuantityIsInvalid() {
+
+        VehicleRepository repository = Mockito.mock(VehicleRepository.class);
+
+        VehicleService service = new VehicleService(repository);
+
+        Vehicle vehicle = new Vehicle();
+        vehicle.setQuantity(5);
+
+        Mockito.when(repository.findById(1L))
+                .thenReturn(Optional.of(vehicle));
+
+        RestockRequest request = new RestockRequest();
+        request.setQuantity(0);
+
+        RuntimeException exception =
+                assertThrows(RuntimeException.class,
+                        () -> service.restockVehicle(1L, request));
+
+        assertEquals("Restock quantity must be greater than zero",
+                exception.getMessage());
+
+        Mockito.verify(repository, Mockito.never())
+                .save(Mockito.any());
+    }
 }

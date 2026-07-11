@@ -113,10 +113,12 @@ public class VehicleService {
                         new RuntimeException("Vehicle not found"));
     }
     
-    public String restockVehicle(Long id,
-            RestockRequest request) {
-
+	 public String restockVehicle(Long id,
+	            RestockRequest request) {
+	
 		Vehicle vehicle = getVehicleById(id);
+		
+		validateRestockQuantity(request);
 		
 		vehicle.setQuantity(
 		vehicle.getQuantity() + request.getQuantity());
@@ -124,6 +126,16 @@ public class VehicleService {
 		repository.save(vehicle);
 		
 		return "Vehicle restocked successfully";
+		}
+	 
+	 private void validateRestockQuantity(RestockRequest request) {
+
+		    if (request.getQuantity() == null ||
+		            request.getQuantity() <= 0) {
+
+		        throw new RuntimeException(
+		                "Restock quantity must be greater than zero");
+		    }
 		}
     
 }
