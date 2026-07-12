@@ -1,0 +1,7 @@
+target
+.git
+.gitignore
+.idea
+.vscode
+node_modules
+Car_Dealership_Client/frontend/node_modules
